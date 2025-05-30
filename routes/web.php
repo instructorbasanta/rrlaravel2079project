@@ -1,20 +1,17 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\Backend\AuthController;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/login',[AuthController::class, 'showLogin'])->name('backend.showlogin');
+Route::post('/login',[AuthController::class, 'login'])->name('backend.login');
 
 
+Route::get('/register',[AuthController::class, 'showRegister'])->name('backend.showregister');
+Route::post('/register',[AuthController::class, 'register'])->name('backend.register');
 
-Route::get('/login', function () {
-    return view('backend.user.login');
-});
-
-Route::get('/register', function () {
-    return view('backend.user.register');
-});
 
 Route::get('/forgot-password', function () {
     return view('backend.user.forgot_password');

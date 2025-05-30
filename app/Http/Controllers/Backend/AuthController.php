@@ -6,6 +6,8 @@ use App\Http\Requests\Backend\RegisterRequest;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -28,5 +30,19 @@ class AuthController extends Controller
         }catch(Exception $ex){
                 return redirect()->back()->with('error','Oops... Error');
         }
+    }
+
+    
+    function login(Request $request){
+        $credentials = $request->only('email', 'password');
+
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+            return redirect()->intended('dashboard');
+        }
+
+        return back()->withErrors([
+            'email' => 'Invalid credentials.',
+        ])->onlyInput('email');
     }
 }

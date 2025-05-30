@@ -5,15 +5,22 @@
         <div class="card-body login-card-body">
           <p class="login-box-msg">Sign in to start your session</p>
           @include('backend.includes.flash_message')
-          <form action="../index3.html" method="post">
+          <form action="{{ route('backend.login') }}" method="post">
+            @csrf
             <div class="input-group mb-3">
-              <input type="email" class="form-control" placeholder="Email" />
+              <input type="email" name="email" value="{{ old('email') }}" class="form-control" placeholder="Email" />
               <div class="input-group-text"><span class="bi bi-envelope"></span></div>
             </div>
+             @error('email')
+              <span class="text-danger">{{$message}}</span>
+            @enderror
             <div class="input-group mb-3">
-              <input type="password" class="form-control" placeholder="Password" />
+              <input type="password" name="password" class="form-control" placeholder="Password" />
               <div class="input-group-text"><span class="bi bi-lock-fill"></span></div>
             </div>
+             @error('password')
+              <span class="text-danger">{{$message}}</span>
+            @enderror
             <!--begin::Row-->
             <div class="row">
               <div class="col-8">

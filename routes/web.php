@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backend\AuthController;
+use App\Http\Controllers\Backend\DashboardController;
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -13,16 +15,16 @@ Route::get('/register',[AuthController::class, 'showRegister'])->name('backend.s
 Route::post('/register',[AuthController::class, 'register'])->name('backend.register');
 
 
+Route::get('/backend/dashboard', [DashboardController::class,'index'])->name('backend.dashboard.index')->middleware('auth');
+
+Route::post('/logout',[AuthController::class, 'logout'])->name('backend.logout');
+
+Route::get('/login', function () {
+    return view('backend.user.login');
+})->name('login');
+
 Route::get('/forgot-password', function () {
     return view('backend.user.forgot_password');
-});
-
-Route::get('/backend/dashboard', function () {
-    return view('backend.dashboard.index');
-});
-
-Route::get('/backend/dashboard', function () {
-    return view('backend.dashboard.index');
 });
 
 Route::get('/backend/category/create', function () {

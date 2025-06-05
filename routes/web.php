@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backend\AuthController;
 use App\Http\Controllers\Backend\DashboardController;
+use App\Http\Controllers\Backend\SettingController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -19,18 +20,12 @@ Route::get('/backend/dashboard', [DashboardController::class,'index'])->name('ba
 
 Route::post('/logout',[AuthController::class, 'logout'])->name('backend.logout');
 
-Route::get('/login', function () {
-    return view('backend.user.login');
-})->name('login');
-
 Route::get('/forgot-password', function () {
     return view('backend.user.forgot_password');
 });
 
-Route::get('/backend/category/create', function () {
-    return view('backend.category.create');
-});
-
-Route::get('/backend/category', function () {
-    return view('backend.category.index');
+Route::prefix('backend/')->name('backend.')->group(function (){
+    Route::resource('setting', SettingController::class)->only([
+        'create', 'store', 'update', 'edit'
+    ]);
 });

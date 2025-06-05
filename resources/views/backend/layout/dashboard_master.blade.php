@@ -3,7 +3,7 @@
   <!--begin::Head-->
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Ecommerce Backend | Dashboard</title>
+    <title>Ecommerce Backend | @yield('title')</title>
     <!--begin::Primary Meta Tags-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="title" content="AdminLTE 4 | General UI Elements" />
@@ -159,7 +159,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="../generate/theme.html" class="nav-link">
+                <a href="{{route('backend.setting.create')}}" class="nav-link">
                   <i class="nav-icon bi bi-palette"></i>
                   <p>Setting</p>
                 </a>
@@ -205,7 +205,7 @@
           <div class="container-fluid">
             <!--begin::Row-->
             <div class="row">
-              <div class="col-sm-6"><h3 class="mb-0">Dashboard</h3></div>
+              <div class="col-sm-6"><h3 class="mb-0">@yield('panel')</h3></div>
               <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-end">
                   <li class="breadcrumb-item"><a href="#">Home</a></li>

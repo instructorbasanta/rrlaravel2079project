@@ -17,7 +17,8 @@ return new class extends Migration
             $table->string('slug');
             $table->integer('rank');
             $table->boolean('status');
-            $table->dateTime('deleted_at');
+                       $table->dateTime("deleted_at")->nullable();
+
             $table->unsignedBigInteger('created_by');
             $table->unsignedBigInteger('updated_by');
             $table->timestamps();

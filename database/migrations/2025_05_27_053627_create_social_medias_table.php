@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('account_name');
             $table->string('url');
             $table->boolean("status");
-            $table->dateTime('deleted_at');
+            $table->dateTime("deleted_at")->nullable();
             $table->unsignedBigInteger("created_by");
             $table->unsignedInteger("updated_by")->nullable();
             $table->timestamps();

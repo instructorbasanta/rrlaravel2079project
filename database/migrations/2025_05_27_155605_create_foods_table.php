@@ -20,7 +20,8 @@ return new class extends Migration
             $table->decimal('price',8,2);
             $table->decimal('discount',8,2)->default(0); 
             $table->boolean('feature_foood')->default(0);
-            $table->dateTime('deleted_at');
+                      $table->dateTime("deleted_at")->nullable();
+
             $table->unsignedBigInteger('updated_by');
             $table->unsignedBigInteger('created_by');
             $table->timestamps();

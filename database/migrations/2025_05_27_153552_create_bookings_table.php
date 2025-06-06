@@ -21,8 +21,7 @@ return new class extends Migration
             $table->integer('guest'); 
             $table->boolean('status');
             $table->timestamps();
-            $table->dateTime('deleted_at');
-
+            $table->dateTime("deleted_at")->nullable();
         });
     }
 

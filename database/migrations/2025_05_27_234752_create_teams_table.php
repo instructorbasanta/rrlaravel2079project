@@ -22,7 +22,8 @@ return new class extends Migration
             $table->string('linkedin');
             $table->string('instagram');
             $table->boolean('status');
-            $table->dateTime('deleted_at');
+                        $table->dateTime("deleted_at")->nullable();
+
             $table->timestamps();
             $table->unsignedBigInteger('created_by');
             $table->unsignedBigInteger('updated_by');

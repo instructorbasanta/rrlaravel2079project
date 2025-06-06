@@ -19,7 +19,8 @@ return new class extends Migration
             $table->text('description');
             $table->string('image');
             $table->boolean('status');
-            $table->dateTime('deleted_at');
+                       $table->dateTime("deleted_at")->nullable();
+
             $table->unsignedBigInteger('created_by');
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();

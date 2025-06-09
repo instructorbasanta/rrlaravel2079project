@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
-use App\Models\Category;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
+use App\Models\Category;
 
 class CategoryController extends Controller
 {
@@ -16,7 +16,7 @@ class CategoryController extends Controller
     {
         $panel = 'Category';
         $records = Category::all();
-        return view('backend.category.index',compact('panel','records'));
+        return view('backend.category.index', compact('panel', 'records'));
     }
 
     /**
@@ -25,7 +25,7 @@ class CategoryController extends Controller
     public function create()
     {
         $panel = 'Category';
-        return view('backend.category.create',compact('panel'));
+        return view('backend.category.create', compact('panel'));
     }
 
     /**
@@ -33,21 +33,19 @@ class CategoryController extends Controller
      */
     public function store(StoreCategoryRequest $request)
     {
-        // if ($request->hasFile('image_file')){
-        //     $file = $request->file('image_file');
-        //     $filename = time() . '_' . $file2->getClientOriginalName();
-        //     $file->move('images/category',$filename);
-        //     $request->request->add(['image' => $filename]);
-        // }
-        $request->request->add(['image' => 'category.jpg']);
+        if ($request->hasFile('image_file')) {
+            $file = $request->file('image_file');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move('images/category', $filename);
+            $request->request->add(['image' => $filename]);
+        }
         $request->request->add(['created_by' => auth()->user()->id]);
         $request->request->add(['updated_by' => auth()->user()->id]);
-        // dd($request);
         $record = Category::create($request->all());
-         if($record){
-            return redirect()->route('backend.category.index')->with('success','Category Creation Success!!!');
+        if ($record) {
+            return redirect()->route('backend.category.index')->with('success', 'Category Creation Success!!!');
         } else {
-            return redirect()->route('backend.category.create')->with('error','Category Creation Failed!!!');
+            return redirect()->route('backend.category.create')->with('error', 'Category Creation Failed!!!');
         }
     }
 
@@ -58,7 +56,7 @@ class CategoryController extends Controller
     {
         $panel = 'Category';
         $record = $category;
-        return view('backend.category.show',compact('panel','record'));
+        return view('backend.category.show', compact('panel', 'record'));
     }
 
     /**
@@ -68,7 +66,7 @@ class CategoryController extends Controller
     {
         $panel = 'Category';
         $record = $category;
-        return view('backend.category.edit',compact('panel','record'));
+        return view('backend.category.edit', compact('panel', 'record'));
     }
 
     /**
@@ -77,10 +75,10 @@ class CategoryController extends Controller
     public function update(UpdateCategoryRequest $request, Category $category)
     {
         $request->request->add(['updated_by' => auth()->user()->id]);
-        if($category->update($request->all())){
-            return redirect()->route('backend.category.index')->with('success','Category Update Success!!!');
+        if ($category->update($request->all())) {
+            return redirect()->route('backend.category.index')->with('success', 'Category Update Success!!!');
         } else {
-            return redirect()->route('backend.category.create')->with('error','Category Update Failed!!!');
+            return redirect()->route('backend.category.create')->with('error', 'Category Update Failed!!!');
         }
     }
 
@@ -89,10 +87,10 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        if($category->delete()){
-            return redirect()->route('backend.category.index')->with('success','Category Delete Success!!!');
+        if ($category->delete()) {
+            return redirect()->route('backend.category.index')->with('success', 'Category Delete Success!!!');
         } else {
-            return redirect()->route('backend.category.create')->with('error','Category Deletion Failed!!!');
+            return redirect()->route('backend.category.create')->with('error', 'Category Deletion Failed!!!');
         }
     }
 
@@ -100,26 +98,26 @@ class CategoryController extends Controller
     {
         $records = Category::onlyTrashed()->get();
         $panel = 'Category';
-        return view('backend.category.trash',compact('panel','records'));
+        return view('backend.category.trash', compact('panel', 'records'));
     }
 
     public function restoreTrash($id)
     {
         $record = Category::onlyTrashed()->where('id', $id)->first();
-        if($record->restore()){
-            return redirect()->route('backend.category.index')->with('success','Category Recovered Success!!!');
+        if ($record->restore()) {
+            return redirect()->route('backend.category.index')->with('success', 'Category Recovered Success!!!');
         } else {
-            return redirect()->route('backend.category.trash')->with('error','Category Recover Failed!!!');
+            return redirect()->route('backend.category.trash')->with('error', 'Category Recover Failed!!!');
         }
     }
 
     public function deleteTrash($id)
     {
         $record = Category::onlyTrashed()->where('id', $id)->first();
-        if($record->forceDelete()){
-            return redirect()->route('backend.category.trash')->with('success','Category Deleted Permanently Success!!!');
+        if ($record->forceDelete()) {
+            return redirect()->route('backend.category.trash')->with('success', 'Category Deleted Permanently Success!!!');
         } else {
-            return redirect()->route('backend.category.trash')->with('error','Category Delete Failed!!!');
+            return redirect()->route('backend.category.trash')->with('error', 'Category Delete Failed!!!');
         }
     }
 }

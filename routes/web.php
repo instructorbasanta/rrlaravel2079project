@@ -29,5 +29,15 @@ Route::prefix('backend/')->name('backend.')->group(function (){
     Route::resource('setting', SettingController::class)->only([
         'create', 'store', 'update', 'edit'
     ]);
-     Route::resource('category', CategoryController::class);
+    //trash list
+    Route::get('category/trash', [CategoryController::class,'showTrash'])->name('category.trash');
+    //trash restore
+    Route::get('category/trash/restore/{category}', [CategoryController::class,'restoreTrash'])->name('category.restore');
+
+    //trash remove/permanent remove
+    Route::delete('category/trash/{category}', [CategoryController::class,'deleteTrash'])->name('category.permanent_destroy');
+
+    Route::resource('category', CategoryController::class);
+
+
 });

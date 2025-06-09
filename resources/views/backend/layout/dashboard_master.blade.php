@@ -108,7 +108,7 @@
                     @csrf
                     <button type="submit" class="btn btn-default btn-flat float-end">Sign out</button>
                   </form>
-                  
+
                 </li>
                 <!--end::Menu Footer-->
               </ul>
@@ -174,22 +174,22 @@
                 </a>
                 <ul class="nav nav-treeview">
                   <li class="nav-item">
-                    <a href="../widgets/small-box.html" class="nav-link">
+                    <a href="{{route('backend.category.create')}}" class="nav-link">
                       <i class="nav-icon bi bi-circle"></i>
                       <p>Create</p>
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="../widgets/info-box.html" class="nav-link">
+                    <a href="{{route('backend.category.index')}}" class="nav-link">
                       <i class="nav-icon bi bi-circle"></i>
                       <p>List</p>
                     </a>
                   </li>
                 </ul>
               </li>
-     
-            
-             
+
+
+
             </ul>
             <!--end::Sidebar Menu-->
           </nav>
@@ -224,7 +224,7 @@
           <div class="container-fluid">
             <!--begin::Row-->
             <div class="row g-4">
-        
+
                 @yield('main-content')
             </div>
             <!--end::Row-->

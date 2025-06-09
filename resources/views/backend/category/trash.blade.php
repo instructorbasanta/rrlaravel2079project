@@ -1,6 +1,6 @@
 @extends('backend.layout.dashboard_master')
 @section('panel',$panel)
-@section('title','List ' . $panel)
+@section('title','List ' . $panel . ' Trash')
 @section('main-content')
 
     <!--begin::Col-->
@@ -8,9 +8,9 @@
                 <!--begin::Accordion-->
                 <div class="card card-primary card-outline mb-4">
                   <!--begin::Header-->
-                  <div class="card-header"><div class="card-title">List {{$panel}}
+                  <div class="card-header"><div class="card-title">List {{$panel}}  Trash
                     <a href="{{ route('backend.category.create') }}" class="btn btn-primary">Create {{$panel}}</a>
-                          <a href="{{ route('backend.category.trash') }}" class="btn btn-danger">{{$panel}} Trash</a>
+                          <a href="{{ route('backend.category.index') }}" class="btn btn-success">List {{$panel}}</a>
 
                       </div></div>
                   <!--end::Header-->
@@ -34,12 +34,11 @@
                                     @include('backend.includes.print_status',['status' => $record->status])
                                 </td>
                                 <td>
-                                  <a href="{{ route('backend.category.show',$record->id) }}" class="btn btn-info">View Details</a>
-                                    <a href="{{ route('backend.category.edit',$record->id) }}" class="btn btn-warning">Edit</a>
-                                    <form style="display: inline-block" action="{{route('backend.category.destroy',$record->id)}}" method="post">
+                                  <a href="{{ route('backend.category.restore',$record->id) }}" class="btn btn-info">Restore</a>
+                                    <form style="display: inline-block" action="{{route('backend.category.permanent_destroy',$record->id)}}" method="post">
                                         <input type="hidden" name="_method" value="DELETE">
                                         @csrf
-                                        <input type="submit" value="Trash" class="btn btn-danger">
+                                        <input type="submit" value="Delete" class="btn btn-danger">
                                     </form>
                                 </td>
                             </tr>

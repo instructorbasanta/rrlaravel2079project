@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
+use Illuminate\Support\Facades\Request;
 
 class CategoryController extends Controller
 {
@@ -66,7 +67,9 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        return view('backend.category.edit');
+        $panel = 'Category';
+        $record = $category;
+        return view('backend.category.edit',compact('panel','record'));
     }
 
     /**
@@ -74,7 +77,12 @@ class CategoryController extends Controller
      */
     public function update(UpdateCategoryRequest $request, Category $category)
     {
-        //
+        $request->request->add(['updated_by' => auth()->user()->id]);
+        if($category->update($request->all())){
+            return redirect()->route('backend.category.index')->with('success','Category Update Success!!!');
+        } else {
+            return redirect()->route('backend.category.create')->with('error','Category Update Failed!!!');
+        }
     }
 
     /**
@@ -82,6 +90,37 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        if($category->delete()){
+            return redirect()->route('backend.category.index')->with('success','Category Delete Success!!!');
+        } else {
+            return redirect()->route('backend.category.create')->with('error','Category Deletion Failed!!!');
+        }
+    }
+
+    public function showTrash()
+    {
+        $records = Category::onlyTrashed()->get();
+        $panel = 'Category';
+        return view('backend.category.trash',compact('panel','records'));
+    }
+
+    public function restoreTrash($id)
+    {
+        $record = Category::onlyTrashed()->where('id', $id)->first();
+        if($record->restore()){
+            return redirect()->route('backend.category.index')->with('success','Category Recovered Success!!!');
+        } else {
+            return redirect()->route('backend.category.trash')->with('error','Category Recover Failed!!!');
+        }
+    }
+
+    public function deleteTrash($id)
+    {
+        $record = Category::onlyTrashed()->where('id', $id)->first();
+        if($record->forceDelete()){
+            return redirect()->route('backend.category.trash')->with('success','Category Deleted Permanently Success!!!');
+        } else {
+            return redirect()->route('backend.category.trash')->with('error','Category Delete Failed!!!');
+        }
     }
 }

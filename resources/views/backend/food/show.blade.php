@@ -23,8 +23,8 @@
                             <td>{{$record->title}}</td>
                         </tr>
                         <tr>
-                            <th>Rank</th>
-                            <td>{{$record->rank}}</td>
+                            <th>price</th>
+                            <td>{{$record->price}}</td>
                         </tr>
                         <tr>
                             <th>Slug</th>

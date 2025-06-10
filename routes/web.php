@@ -6,6 +6,7 @@ use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\SettingController;
 use App\Http\Controllers\Backend\CategoryController;
 use App\Http\Controllers\Backend\TagController;
+use App\Http\Controllers\Backend\FoodController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -50,4 +51,13 @@ Route::prefix('backend/')->name('backend.')->group(function (){
 
     Route::resource('tag', TagController::class);
 
+//    For Food
+    //trash list
+    Route::get('food/trash', [FoodController::class,'showTrash'])->name('food.trash');
+    //trash restore
+    Route::get('food/trash/restore/{food}', [FoodController::class,'restoreTrash'])->name('food.restore');
+    //trash remove/permanent remove
+    Route::delete('food/trash/{food}', [FoodController::class,'deleteTrash'])->name('food.permanent_destroy');
+
+    Route::resource('food', FoodController::class);
 });

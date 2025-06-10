@@ -44,6 +44,7 @@
     <!--begin::Required Plugin(AdminLTE)-->
     <link rel="stylesheet" href="{{asset('assets/backend/css/adminlte.css')}}" />
     <!--end::Required Plugin(AdminLTE)-->
+      @yield('css')
   </head>
   <!--end::Head-->
   <!--begin::Body-->
@@ -212,7 +213,29 @@
                     </ul>
                 </li>
 
-
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon bi bi-box-seam-fill"></i>
+                        <p>
+                            Food
+                            <i class="nav-arrow bi bi-chevron-right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{route('backend.food.create')}}" class="nav-link">
+                                <i class="nav-icon bi bi-circle"></i>
+                                <p>Create</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{route('backend.food.index')}}" class="nav-link">
+                                <i class="nav-icon bi bi-circle"></i>
+                                <p>List</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
             </ul>
             <!--end::Sidebar Menu-->
           </nav>
@@ -337,6 +360,7 @@
     </script>
     <!--end::Bootstrap Toasts-->
     <!--end::Script-->
+  @yield('js')
   </body>
   <!--end::Body-->
 </html>

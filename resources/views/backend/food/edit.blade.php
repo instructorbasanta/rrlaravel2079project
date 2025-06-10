@@ -19,11 +19,24 @@
                     <form enctype="multipart/form-data" action="{{ route($base_route . 'update',$record->id) }}" method="post">
                         @csrf
                         <input type="hidden" name="_method" value="PATCH">
+                        <div class="form-group">
+                            <label for="category_id">Category</label>
+                            <select id="category_id" name="category_id"
+                                    class="form-control">
+                                <option value="">Select Category</option>
+                                @foreach($categories as $key => $value)
+                                    <option value="{{$key}}" @if($key== $record->category_id) selected @endif > {{$value}}</option>
+                                @endforeach
+                            </select>
+                            @error('category_id')
+                            <span class="text-danger">{{$message}}</span>
+                            @enderror
+                        </div>
                         @include('backend.includes.input_field',['name' => 'title','title' => 'Title','data'  => $record->title])
                         @include('backend.includes.input_field',['name' => 'slug','title' => 'Slug','data'  => $record->slug])
-                        @include('backend.includes.input_field',['name' => 'rank','title' => 'Rank','data'  => $record->rank])
-                        @include('backend.includes.input_field',['name' => 'description','title' => 'Description','data'  => $record->description])
-                        @include('backend.includes.input_field',['name' => 'icon','title' => 'Icon Code','data'  => $record->icon])
+                        @include('backend.includes.input_field',['name' => 'price','title' => 'Price','data'  => $record->price])
+                        @include('backend.includes.input_field',['name' => 'price','title' => 'Discount','data'  => $record->discount])
+                        @include('backend.includes.input_field',['name' => 'descrition','title' => 'Description','data'  => $record->description])
                         <div class="form-group">
                             <label for="image">Image</label>
                             <input id="image" type="file" name="image_file"
@@ -48,6 +61,25 @@
 
                             @error('status')
                                 <span class="text-danger">{{$message}}</span>
+                            @enderror
+                        </div>
+
+                        <div class="form-group">
+                            <label for="status">Feature Food Key</label>
+                            @if($record->feature_foood == 1)
+                                <input id="feature_foood" type="radio" name="feature_foood"
+                                       value="1" checked />Active
+                                <input id="feature_foood" type="radio" name="feature_foood"
+                                       value="0"  />In-Active
+                            @else
+                                <input id="feature_foood" type="radio" name="feature_foood"
+                                       value="1"  />Active
+                                <input id="feature_foood" type="radio" name="feature_foood"
+                                       value="0" checked />In-Active
+                            @endif
+
+                            @error('feature_foood')
+                            <span class="text-danger">{{$message}}</span>
                             @enderror
                         </div>
 

@@ -22,7 +22,7 @@
                     <tr>
                         <th>SN</th>
                         <th>Title</th>
-                        <th>Rank</th>
+                        <th>Price</th>
                         <th>Status</th>
                         <th>Action</th>
                     </tr>
@@ -30,7 +30,7 @@
                         <tr>
                             <td>{{$key+1}}</td>
                             <td>{{ $record->title }}</td>
-                            <td>{{ $record->rank }}</td>
+                            <td>{{ $record->price }}</td>
                             <td>
                                 @include('backend.includes.print_status',['status' => $record->status])
                             </td>

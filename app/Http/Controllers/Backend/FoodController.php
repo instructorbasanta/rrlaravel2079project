@@ -4,16 +4,20 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCategoryRequest;
+use App\Http\Requests\StoreFoodRequest;
 use App\Http\Requests\UpdateCategoryRequest;
+use App\Http\Requests\UpdateFoodRequest;
 use App\Models\Category;
+use App\Models\Food;
+use App\Models\Tag;
 use Illuminate\Support\Facades\View;
 
-class CategoryController extends Controller
+class FoodController extends Controller
 {
-    public $base_route = 'backend.category.';
-    public $base_view = 'backend.category.';
-    public $panel = 'Category';
-    public $base_image_folder = 'images/category/';
+    public $base_route = 'backend.food.';
+    public $base_view = 'backend.food.';
+    public $panel = 'Food';
+    public $base_image_folder = 'images/food/';
 
     function __construct()
     {
@@ -28,7 +32,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $records = Category::all();
+        $records = Food::all();
         return view($this->base_route . 'index', compact('records'));
     }
 
@@ -37,24 +41,29 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view($this->base_view . 'create');
+        $categories = Category::pluck('title','id');
+        $tags = Tag::pluck('title','id');
+
+        return view($this->base_view . 'create',compact('categories','tags'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreCategoryRequest $request)
+    public function store(StoreFoodRequest $request)
     {
-        if ($request->hasFile('image_file')) {
-            $file = $request->file('image_file');
-            $filename = time() . '_' . $file->getClientOriginalName();
-            $file->move($this->base_image_folder, $filename);
-            $request->request->add(['image' => $filename]);
-        }
+//        if ($request->hasFile('image_file')) {
+//            $file = $request->file('image_file');
+//            $filename = time() . '_' . $file->getClientOriginalName();
+//            $file->move($this->base_image_folder, $filename);
+//            $request->request->add(['image' => $filename]);
+//        }
+        $request->request->add(['image' => 'test.jpg']);
         $request->request->add(['created_by' => auth()->user()->id]);
         $request->request->add(['updated_by' => auth()->user()->id]);
-        $record = Category::create($request->all());
+        $record = Food::create($request->all());
         if ($record) {
+            $record->tags()->attach($request->input('tag_id'));
             return redirect()->route($this->base_route . 'index')->with('success', $this->panel . ' Creation Success!!!');
         } else {
             return redirect()->route($this->base_route . 'create')->with('error', $this->panel . ' Creation Failed!!!');
@@ -64,28 +73,29 @@ class CategoryController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Category $category)
+    public function show(Food $food)
     {
-        $record = $category;
+        $record = $food;
         return view($this->base_view . 'show', compact('record'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Category $category)
+    public function edit(Food $food)
     {
-        $record = $category;
-        return view($this->base_view . 'edit', compact('record'));
+        $record = $food;
+        $categories = Category::pluck('title','id');
+        return view($this->base_view . 'edit', compact('record','categories'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCategoryRequest $request, Category $category)
+    public function update(UpdateFoodRequest $request, Food $food)
     {
         $request->request->add(['updated_by' => auth()->user()->id]);
-        if ($category->update($request->all())) {
+        if ($food->update($request->all())) {
             return redirect()->route($this->base_route . 'index')->with('success', $this->panel . ' Update Success!!!');
         } else {
             return redirect()->route($this->base_route . 'create')->with('error', $this->panel . ' Update Failed!!!');
@@ -95,9 +105,9 @@ class CategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Category $category)
+    public function destroy(Food $food)
     {
-        if ($category->delete()) {
+        if ($food->delete()) {
             return redirect()->route($this->base_route . 'index')->with('success', $this->panel . ' Delete Success!!!');
         } else {
             return redirect()->route($this->base_route . 'create')->with('error', $this->panel . ' Deletion Failed!!!');
@@ -106,13 +116,13 @@ class CategoryController extends Controller
 
     public function showTrash()
     {
-        $records = Category::onlyTrashed()->get();
+        $records = Food::onlyTrashed()->get();
         return view($this->base_view . 'trash', compact('records'));
     }
 
     public function restoreTrash($id)
     {
-        $record = Category::onlyTrashed()->where('id', $id)->first();
+        $record = Food::onlyTrashed()->where('id', $id)->first();
         if ($record->restore()) {
             return redirect()->route($this->base_route . 'index')->with('success', $this->panel . ' Recovered Success!!!');
         } else {
@@ -122,7 +132,7 @@ class CategoryController extends Controller
 
     public function deleteTrash($id)
     {
-        $record = Category::onlyTrashed()->where('id', $id)->first();
+        $record = Food::onlyTrashed()->where('id', $id)->first();
         if ($record->forceDelete()) {
             return redirect()->route($this->base_route . 'trash')->with('success', $this->panel . ' Deleted Permanently Success!!!');
         } else {

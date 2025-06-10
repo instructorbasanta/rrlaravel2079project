@@ -1,6 +1,6 @@
 @extends('backend.layout.dashboard_master')
 @section('panel',$panel)
-@section('title','List ' . $panel)
+@section('title','List ' . $panel . ' Trash')
 @section('main-content')
     <!--begin::Col-->
     <div class="col-md-12">
@@ -8,10 +8,9 @@
         <div class="card card-primary card-outline mb-4">
             <!--begin::Header-->
             <div class="card-header">
-                <div class="card-title">List {{$panel}}
+                <div class="card-title">List {{$panel}} Trash
                     <a href="{{ route($base_route . 'create') }}" class="btn btn-primary">Create {{$panel}}</a>
-                    <a href="{{ route($base_route . 'trash') }}" class="btn btn-danger">{{$panel}} Trash</a>
-
+                    <a href="{{ route($base_route . 'index') }}" class="btn btn-success">List {{$panel}}</a>
                 </div>
             </div>
             <!--end::Header-->
@@ -22,7 +21,7 @@
                     <tr>
                         <th>SN</th>
                         <th>Title</th>
-                        <th>Rank</th>
+                        <th>Price</th>
                         <th>Status</th>
                         <th>Action</th>
                     </tr>
@@ -30,20 +29,19 @@
                         <tr>
                             <td>{{$key+1}}</td>
                             <td>{{ $record->title }}</td>
-                            <td>{{ $record->rank }}</td>
+                            <td>{{ $record->price }}</td>
                             <td>
                                 @include('backend.includes.print_status',['status' => $record->status])
                             </td>
                             <td>
-                                <a href="{{ route($base_route . 'show',$record->id) }}" class="btn btn-info">View
-                                    Details</a>
-                                <a href="{{ route($base_route .'edit',$record->id) }}"
-                                   class="btn btn-warning">Edit</a>
+                                <a href="{{ route($base_route . 'restore',$record->id) }}"
+                                   class="btn btn-info">Restore</a>
                                 <form style="display: inline-block"
-                                      action="{{route($base_route . 'destroy',$record->id)}}" method="post">
+                                      action="{{route($base_route . 'permanent_destroy',$record->id)}}"
+                                      method="post">
                                     <input type="hidden" name="_method" value="DELETE">
                                     @csrf
-                                    <input type="submit" value="Trash" class="btn btn-danger">
+                                    <input type="submit" value="Delete" class="btn btn-danger">
                                 </form>
                             </td>
                         </tr>
@@ -53,7 +51,5 @@
             <!--end::Body-->
         </div>
         <!--end::Accordion-->
-
     </div>
-
 @endsection

@@ -46,7 +46,7 @@
                         @enderror
                     </div>
                     <div class="form-group">
-                        <label for="tag_id">Category</label>
+                        <label for="tag_id">Tag List</label>
                         <select id="tag_id" name="tag_id[]"
                                 class="form-control" multiple>
                             <option value="">Select Tag</option>

@@ -10,7 +10,9 @@ use App\Http\Requests\UpdateFoodRequest;
 use App\Models\Category;
 use App\Models\Food;
 use App\Models\Tag;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
+use Mockery\Exception;
 
 class FoodController extends Controller
 {
@@ -61,11 +63,18 @@ class FoodController extends Controller
         $request->request->add(['image' => 'test.jpg']);
         $request->request->add(['created_by' => auth()->user()->id]);
         $request->request->add(['updated_by' => auth()->user()->id]);
-        $record = Food::create($request->all());
-        if ($record) {
-            $record->tags()->attach($request->input('tag_id'));
-            return redirect()->route($this->base_route . 'index')->with('success', $this->panel . ' Creation Success!!!');
-        } else {
+        DB::beginTransaction();
+        try{
+            $record = Food::create($request->all());
+            if ($record) {
+                $record->tags()->attach($request->input('tag_id'));
+                DB::commit();
+                return redirect()->route($this->base_route . 'index')->with('success', $this->panel . ' Creation Success!!!');
+            } else {
+                DB::rollBack();
+                return redirect()->route($this->base_route . 'create')->with('error', $this->panel . ' Creation Failed!!!');
+            }
+        }catch (\Exception  $exception){
             return redirect()->route($this->base_route . 'create')->with('error', $this->panel . ' Creation Failed!!!');
         }
     }
@@ -85,8 +94,13 @@ class FoodController extends Controller
     public function edit(Food $food)
     {
         $record = $food;
+        $food_tags = [];
+        foreach ($food->tags as $tag){
+            array_push($food_tags,$tag->id);
+        }
+        $tags = Tag::pluck('title','id');
         $categories = Category::pluck('title','id');
-        return view($this->base_view . 'edit', compact('record','categories'));
+        return view($this->base_view . 'edit', compact('record','categories','tags','food_tags'));
     }
 
     /**
@@ -94,11 +108,26 @@ class FoodController extends Controller
      */
     public function update(UpdateFoodRequest $request, Food $food)
     {
+        //        if ($request->hasFile('image_file')) {
+//            $file = $request->file('image_file');
+//            $filename = time() . '_' . $file->getClientOriginalName();
+//            $file->move($this->base_image_folder, $filename);
+//            $request->request->add(['image' => $filename]);
+//        }
+        $request->request->add(['image' => 'test.jpg']);
         $request->request->add(['updated_by' => auth()->user()->id]);
-        if ($food->update($request->all())) {
-            return redirect()->route($this->base_route . 'index')->with('success', $this->panel . ' Update Success!!!');
-        } else {
-            return redirect()->route($this->base_route . 'create')->with('error', $this->panel . ' Update Failed!!!');
+        DB::beginTransaction();
+        try{
+            if ($food->update($request->all())) {
+                $food->tags()->sync($request->input('tag_id'));
+                DB::commit();
+                return redirect()->route($this->base_route . 'index')->with('success', $this->panel . ' Update Success!!!');
+            } else {
+                return redirect()->route($this->base_route . 'edit',$food->id)->with('error', $this->panel . ' Update Failed!!!');
+            }
+        }catch (\Exception  $exception){
+            DB::rollBack();
+            return redirect()->route($this->base_route . 'edit',$food->id)->with('error', $this->panel . ' Update Failed!!!');
         }
     }
 
@@ -133,10 +162,18 @@ class FoodController extends Controller
     public function deleteTrash($id)
     {
         $record = Food::onlyTrashed()->where('id', $id)->first();
-        if ($record->forceDelete()) {
-            return redirect()->route($this->base_route . 'trash')->with('success', $this->panel . ' Deleted Permanently Success!!!');
-        } else {
+        DB::beginTransaction();
+        try {
+            $record->tags()->detach();
+            if ($record->forceDelete()) {
+                DB::commit();
+                return redirect()->route($this->base_route . 'trash')->with('success', $this->panel . ' Deleted Permanently Success!!!');
+            } else {
+                return redirect()->route($this->base_route . 'trash')->with('error', $this->panel . ' Delete Failed!!!');
+            }
+        }catch (Exception $exception){
             return redirect()->route($this->base_route . 'trash')->with('error', $this->panel . ' Delete Failed!!!');
+            DB::rollBack();
         }
     }
 }

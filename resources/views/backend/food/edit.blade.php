@@ -1,6 +1,18 @@
 @extends('backend.layout.dashboard_master')
 @section('panel',$panel)
 @section('title','Edit ' . $panel)
+@section('js')
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#tag_id').select2();
+        });
+    </script>
+@endsection
+@section('css')
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+@endsection
 @section('main-content')
 
     <!--begin::Col-->
@@ -29,6 +41,23 @@
                                 @endforeach
                             </select>
                             @error('category_id')
+                            <span class="text-danger">{{$message}}</span>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <label for="tag_id">Tag List</label>
+                            <select id="tag_id" name="tag_id[]"
+                                    class="form-control" multiple>
+                                <option value="">Select Tag</option>
+                                @foreach($tags as $key => $value)
+                                    @if(in_array($key,$food_tags))
+                                        <option value="{{$key}}" selected>{{$value}}</option>
+                                    @else
+                                        <option value="{{$key}}">{{$value}}</option>
+                                    @endif
+                                @endforeach
+                            </select>
+                            @error('tag_id')
                             <span class="text-danger">{{$message}}</span>
                             @enderror
                         </div>

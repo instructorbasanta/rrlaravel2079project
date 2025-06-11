@@ -19,11 +19,15 @@
                     @include('backend.includes.flash_message')
                     <table class="table table-bordered">
                         <tr>
+                            <th>Category</th>
+                            <td>{{$record->category->title}}</td>
+                        </tr>
+                        <tr>
                             <th>Title</th>
                             <td>{{$record->title}}</td>
                         </tr>
                         <tr>
-                            <th>price</th>
+                            <th>Price</th>
                             <td>{{$record->price}}</td>
                         </tr>
                         <tr>
@@ -37,6 +41,16 @@
                         <tr>
                             <th>Updated by</th>
                             <td>{{$record->updatedBy->name}}</td>
+                        </tr>
+                        <tr>
+                            <th>Tags</th>
+                            <td>
+                                <ul>
+                                    @foreach($record->tags as $tag)
+                                        <li>{{$tag->title}}</li>
+                                    @endforeach
+                                </ul>
+                            </td>
                         </tr>
                     </table>
                   </div>

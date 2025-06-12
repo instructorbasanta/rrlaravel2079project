@@ -20,4 +20,8 @@ class Category extends Model
     {
         return $this->belongsTo(User::class, 'updated_by','id');
     }
+
+    public function foods(){
+        return $this->hasMany(Food::class);
+    }
 }

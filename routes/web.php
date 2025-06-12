@@ -7,10 +7,10 @@ use App\Http\Controllers\Backend\SettingController;
 use App\Http\Controllers\Backend\CategoryController;
 use App\Http\Controllers\Backend\TagController;
 use App\Http\Controllers\Backend\FoodController;
+use App\Http\Controllers\Frontend\HomeController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [HomeController::class,'showHomePage'])->name('frontend.homepage');
+
 Route::get('/login',[AuthController::class, 'showLogin'])->name('backend.showlogin');
 Route::post('/login',[AuthController::class, 'login'])->name('backend.login');
 

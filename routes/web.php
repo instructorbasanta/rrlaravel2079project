@@ -10,6 +10,10 @@ use App\Http\Controllers\Backend\FoodController;
 use App\Http\Controllers\Frontend\HomeController;
 
 Route::get('/', [HomeController::class,'showHomePage'])->name('frontend.homepage');
+Route::get('/menu', [HomeController::class,'showMenu'])->name('frontend.menu');
+Route::get('/booking', [HomeController::class,'showBookingForm'])->name('frontend.booking');
+Route::post('/booking', [HomeController::class,'storeBookingData'])->name('frontend.store_booking');
+
 
 Route::get('/login',[AuthController::class, 'showLogin'])->name('backend.showlogin');
 Route::post('/login',[AuthController::class, 'login'])->name('backend.login');

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Frontend\BookingRequest;
+use App\Models\Booking;
 use App\Models\Category;
 use App\Models\Setting;
 use Illuminate\Http\Request;
@@ -18,5 +20,22 @@ class HomeController extends Controller
     }
     public function showHomePage(){
         return view('frontend.home');
+    }
+
+    public function showMenu(){
+        return view('frontend.menu');
+    }
+
+    function  showBookingForm(){
+        return view('frontend.booking');
+    }
+
+    public  function  storeBookingData(Request $request){
+        $request->request->add(['status' => 1]);
+        if (Booking::create($request->all())){
+            return back()->with('success', 'Booking Successful');
+        } else {
+            return back()->with('error', 'Booking Failed');
+        }
     }
 }

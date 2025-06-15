@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
+use Binafy\LaravelCart\Cartable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Food extends Model
+class Food extends Model implements  Cartable
 {
     use SoftDeletes;
     protected $fillable  = ['category_id','title','slug','image','price','discount','descrition','feature_foood','status','created_by','updated_by'];
@@ -29,5 +30,10 @@ class Food extends Model
     public function category()
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function getPrice(): float
+    {
+        // TODO: Implement getPrice() method.
     }
 }

@@ -39,104 +39,28 @@
                             </div>
                         </div>
                     @endforeach
-                    <div id="snacks" class="container tab-pane fade">
-                        <div class="row">
-                            <div class="col-lg-7 col-md-12">
-                                <div class="menu-item">
-                                    <div class="menu-img">
-                                        <img src="{{asset('assets/frontend/img/menu-snack.jpg')}}" alt="Image">
-                                    </div>
-                                    <div class="menu-text">
-                                        <h3><span>Corn Tikki - Spicy fried Aloo</span> <strong>$15.00</strong></h3>
-                                        <p>Lorem ipsum dolor sit amet elit. Phasel nec preti facil</p>
-                                    </div>
-                                </div>
-                                <div class="menu-item">
-                                    <div class="menu-img">
-                                        <img src="{{asset('assets/frontend/img/menu-snack.jpg')}}" alt="Image">
-                                    </div>
-                                    <div class="menu-text">
-                                        <h3><span>Bread besan Toast</span> <strong>$35.00</strong></h3>
-                                        <p>Lorem ipsum dolor sit amet elit. Phasel nec preti facil</p>
-                                    </div>
-                                </div>
-                                <div class="menu-item">
-                                    <div class="menu-img">
-                                        <img src="{{asset('assets/frontend/img/menu-snack.jpg')}}" alt="Image">
-                                    </div>
-                                    <div class="menu-text">
-                                        <h3><span>Healthy soya nugget snacks</span> <strong>$20.00</strong></h3>
-                                        <p>Lorem ipsum dolor sit amet elit. Phasel nec preti facil</p>
-                                    </div>
-                                </div>
-                                <div class="menu-item">
-                                    <div class="menu-img">
-                                        <img src="{{asset('assets/frontend/img/menu-snack.jpg')}}" alt="Image">
-                                    </div>
-                                    <div class="menu-text">
-                                        <h3><span>Tandoori Soya Chunks</span> <strong>$30.00</strong></h3>
-                                        <p>Lorem ipsum dolor sit amet elit. Phasel nec preti facil</p>
-                                    </div>
-                                </div>
+                    <div class="col-lg-12 d-none d-lg-block mt-5">
+                        <h2>Add to Cart</h2>
+                        @include('backend.includes.flash_message')
+                        <form action="{{route('frontend.add_to_cart')}}" method="post">
+                            @csrf
+                            <div class="form-group">
+                                <label for="food_id">Food Name</label>
+                                <select name="food_id" id="food_id" class="form-control">
+                                    <option value="">Select Food</option>
+                                    @foreach($data['foods'] as $key => $food)
+                                        <option value="{{$key}}">{{$food}}</option>
+                                    @endforeach
+                                </select>
                             </div>
-                            <div class="col-lg-5 d-none d-lg-block">
-                                <img src="{{asset('assets/frontend/img/menu-snack-img.jpg')}}" alt="Image">
+                            <div class="form-group">
+                                <label for="food_id">Quantity</label>
+                                <input class="form-control" id="quantity" name="quantity" min="0" max="100" />
                             </div>
-                        </div>
-                    </div>
-                    <div id="beverages" class="container tab-pane fade">
-                        <div class="row">
-                            <div class="col-lg-7 col-md-12">
-                                <div class="menu-item">
-                                    <div class="menu-img">
-                                        <img src="{{asset('assets/frontend/img/menu-beverage.jpg')}}" alt="Image">
-                                    </div>
-                                    <div class="menu-text">
-                                        <h3><span>Single Cup Brew</span> <strong>$7.00</strong></h3>
-                                        <p>Lorem ipsum dolor sit amet elit. Phasel nec preti facil</p>
-                                    </div>
-                                </div>
-                                <div class="menu-item">
-                                    <div class="menu-img">
-                                        <img src="{{asset('assets/frontend/img/menu-beverage.jpg')}}" alt="Image">
-                                    </div>
-                                    <div class="menu-text">
-                                        <h3><span>Caffe Americano</span> <strong>$9.00</strong></h3>
-                                        <p>Lorem ipsum dolor sit amet elit. Phasel nec preti facil</p>
-                                    </div>
-                                </div>
-                                <div class="menu-item">
-                                    <div class="menu-img">
-                                        <img src="img/menu-beverage.jpg" alt="Image">
-                                    </div>
-                                    <div class="menu-text">
-                                        <h3><span>Caramel Macchiato</span> <strong>$15.00</strong></h3>
-                                        <p>Lorem ipsum dolor sit amet elit. Phasel nec preti facil</p>
-                                    </div>
-                                </div>
-                                <div class="menu-item">
-                                    <div class="menu-img">
-                                        <img src="img/menu-beverage.jpg" alt="Image">
-                                    </div>
-                                    <div class="menu-text">
-                                        <h3><span>Standard black coffee</span> <strong>$8.00</strong></h3>
-                                        <p>Lorem ipsum dolor sit amet elit. Phasel nec preti facil</p>
-                                    </div>
-                                </div>
-                                <div class="menu-item">
-                                    <div class="menu-img">
-                                        <img src="img/menu-beverage.jpg" alt="Image">
-                                    </div>
-                                    <div class="menu-text">
-                                        <h3><span>Standard black coffee</span> <strong>$12.00</strong></h3>
-                                        <p>Lorem ipsum dolor sit amet elit. Phasel nec preti facil</p>
-                                    </div>
-                                </div>
+                            <div class="form-group">
+                                <input class="btn btn-success" type="submit" value="Add to Cart"/>
                             </div>
-                            <div class="col-lg-5 d-none d-lg-block">
-                                <img src="img/menu-beverage-img.jpg" alt="Image">
-                            </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>

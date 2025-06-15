@@ -13,6 +13,9 @@ Route::get('/', [HomeController::class,'showHomePage'])->name('frontend.homepage
 Route::get('/menu', [HomeController::class,'showMenu'])->name('frontend.menu');
 Route::get('/booking', [HomeController::class,'showBookingForm'])->name('frontend.booking');
 Route::post('/booking', [HomeController::class,'storeBookingData'])->name('frontend.store_booking');
+Route::post('/add-to-cart', [HomeController::class,'addToCart'])->name('frontend.add_to_cart');
+Route::get('/cart', [HomeController::class,'showCart'])->name('frontend.cart');
+Route::get('/checkout', [HomeController::class,'showCheckoutPage'])->name('frontend.checkout');
 
 
 Route::get('/login',[AuthController::class, 'showLogin'])->name('backend.showlogin');

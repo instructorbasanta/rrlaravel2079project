@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Frontend\BookingRequest;
 use App\Models\Booking;
 use App\Models\Category;
+use App\Models\Food;
 use App\Models\Setting;
+use Binafy\LaravelCart\Models\Cart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 
@@ -23,7 +25,8 @@ class HomeController extends Controller
     }
 
     public function showMenu(){
-        return view('frontend.menu');
+        $data['foods'] = Food::pluck('title','id');
+        return view('frontend.menu',compact('data'));
     }
 
     function  showBookingForm(){
@@ -38,4 +41,32 @@ class HomeController extends Controller
             return back()->with('error', 'Booking Failed');
         }
     }
+
+    public  function  addToCart(Request $request){
+
+        if(Cart::query()->firstOrCreateWithStoreItems(
+            Food::find($request->food_id),
+            $request->quantity,
+            1
+        )){
+            return back()->with('success', 'Food Added into Cart Successful');
+        }else{
+            return back()->with('error', 'Failed to add into cart!!!');
+        }
+    }
+
+    public function showCart(){
+
+        $cart = Cart::query()->firstOrCreate(['user_id' => 1]);
+        $cart_items = $cart->items()->get();
+        return view('frontend.cart',compact('cart_items'));
+    }
+
+    public function showCheckoutPage(){
+
+        $cart = Cart::query()->firstOrCreate(['user_id' => 1]);
+        $cart_items = $cart->items()->get();
+        return view('frontend.checkout',compact('cart_items'));
+    }
+
 }
